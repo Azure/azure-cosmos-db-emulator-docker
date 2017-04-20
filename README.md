@@ -5,7 +5,7 @@ This repository contains the scripts required to install and run the  [Azure Doc
 ## About the Azure DocumentDB service
 DocumentDB is Microsoft's multi-tenant, globally distributed database system designed to enable developers to build planet scale applications. DocumentDB allows you to elastically scale both, throughput and storage across any number of geographical regions. The service offers guaranteed low latency at P99, 99.99% high availability, predictable throughput, and multiple well-defined consistency models, all backed by comprehensive SLAs. By virtue of its schema-agnostic and write optimized database engine, by default DocumentDB is capable of automatically indexing all the data it ingests and serve SQL, MongoDB, and JavaScript language-integrated queries in a scale-independent manner. As a cloud service, DocumentDB is carefully engineered with multi-tenancy and global distribution from the ground up.
 
-## About the Azure DocumentDB Emulator
+## About the Azure DocumentDB emulator
 
 The Azure DocumentDB Emulator provides a local environment that emulates the Azure DocumentDB service for development purposes. Using the DocumentDB Emulator, you can develop and test your application locally, without creating an Azure subscription or incurring any costs. When you're satisfied with how your application is working in the DocumentDB Emulator, you can switch to using an Azure DocumentDB account in the cloud.
 
