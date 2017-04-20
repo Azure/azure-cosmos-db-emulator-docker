@@ -2,6 +2,8 @@
 
 This repository contains the scripts required to install and run the  [Azure DocumentDB Emulator](https://docs.microsoft.com/azure/documentdb/documentdb-nosql-local-emulator) as a Docker container. 
 
+You can fetch the image from Docker Hub by running `docker pull Microsoft/azure-documentdb-emulator`.
+
 ## About the Azure DocumentDB service
 [DocumentDB](https://azure.microsoft.com/services/documentdb/) is Microsoft's multi-tenant, globally distributed database system designed to enable developers to build planet scale applications. DocumentDB allows you to elastically scale both, throughput and storage across any number of geographical regions. The service offers guaranteed low latency at P99, 99.99% high availability, predictable throughput, and multiple well-defined consistency models, all backed by comprehensive SLAs. By virtue of its schema-agnostic and write optimized database engine, by default DocumentDB is capable of automatically indexing all the data it ingests and serve SQL, MongoDB, and JavaScript language-integrated queries in a scale-independent manner. As a cloud service, DocumentDB is carefully engineered with multi-tenancy and global distribution from the ground up.
 
@@ -16,7 +18,7 @@ The DocumentDB Emulator can be run on Docker Windows containers. The emulator do
 Once you have [Docker for Windows](https://www.docker.com/docker-windows) installed, you can pull the Emulator image from Docker Hub by running the following command from your favorite shell (cmd.exe, PowerShell, etc.).
 
 ```      
-docker pull mominag/documentdb_emulator 
+docker pull Microsoft/azure-documentdb-emulator 
 ```
 To start the image, run the following commands.
 
