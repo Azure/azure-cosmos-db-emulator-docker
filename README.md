@@ -3,7 +3,7 @@
 This repository contains the scripts required to install and run the  [Azure DocumentDB Emulator](https://docs.microsoft.com/azure/documentdb/documentdb-nosql-local-emulator) as a Docker container. 
 
 ## About the Azure DocumentDB service
-DocumentDB is Microsoft's multi-tenant, globally distributed database system designed to enable developers to build planet scale applications. DocumentDB allows you to elastically scale both, throughput and storage across any number of geographical regions. The service offers guaranteed low latency at P99, 99.99% high availability, predictable throughput, and multiple well-defined consistency models, all backed by comprehensive SLAs. By virtue of its schema-agnostic and write optimized database engine, by default DocumentDB is capable of automatically indexing all the data it ingests and serve SQL, MongoDB, and JavaScript language-integrated queries in a scale-independent manner. As a cloud service, DocumentDB is carefully engineered with multi-tenancy and global distribution from the ground up.
+[DocumentDB](https://azure.microsoft.com/services/documentdb/) is Microsoft's multi-tenant, globally distributed database system designed to enable developers to build planet scale applications. DocumentDB allows you to elastically scale both, throughput and storage across any number of geographical regions. The service offers guaranteed low latency at P99, 99.99% high availability, predictable throughput, and multiple well-defined consistency models, all backed by comprehensive SLAs. By virtue of its schema-agnostic and write optimized database engine, by default DocumentDB is capable of automatically indexing all the data it ingests and serve SQL, MongoDB, and JavaScript language-integrated queries in a scale-independent manner. As a cloud service, DocumentDB is carefully engineered with multi-tenancy and global distribution from the ground up.
 
 ## About the Azure DocumentDB emulator
 
@@ -49,5 +49,5 @@ powershell .\importcert.ps1
 ```
 
 ## Developing against the emulator
-See [Developing against the emulator](https://docs.microsoft.com/en-us/azure/documentdb/documentdb-nosql-local-emulator#developing-with-the-emulator) for how to connect to the emulator using the DocumentDB SDKs or REST API.
+See [Developing against the emulator](https://docs.microsoft.com/azure/documentdb/documentdb-nosql-local-emulator#developing-with-the-emulator) for how to connect to the emulator using the DocumentDB SDKs or REST API.
 
