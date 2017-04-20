@@ -9,7 +9,7 @@ DocumentDB is Microsoft's multi-tenant, globally distributed database system des
 
 The Azure DocumentDB Emulator provides a local environment that emulates the Azure DocumentDB service for development purposes. Using the DocumentDB Emulator, you can develop and test your application locally, without creating an Azure subscription or incurring any costs. When you're satisfied with how your application is working in the DocumentDB Emulator, you can switch to using an Azure DocumentDB account in the cloud.
 
-## Running on Docker for Windows
+## Running inside Docker
 
 The DocumentDB Emulator can be run on Docker Windows containers. The emulator does not work on Linux containers. 
 
@@ -47,3 +47,7 @@ Use the endpoint and master key in from the response in your client and import t
 cd %LOCALAPPDATA%\DocumentDBEmulatorCert
 powershell .\importcert.ps1
 ```
+
+## Developing against the emulator
+See [Developing against the emulator](https://docs.microsoft.com/en-us/azure/documentdb/documentdb-nosql-local-emulator#developing-with-the-emulator) for how to connect to the emulator using the DocumentDB SDKs or REST API.
+
