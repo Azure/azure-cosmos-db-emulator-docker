@@ -1,1 +1,1 @@
-docker build -t documentdb_emulator .
+docker build -t cosmosdb_emulator .
