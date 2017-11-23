@@ -23,8 +23,8 @@ docker pull microsoft/azure-cosmosdb-emulator
 To start the image, run the following commands.
 
 ``` 
-md %LOCALAPPDATA%\CosmosDBEmulatorCert 2>nul
-docker run -v %LOCALAPPDATA%\CosmosDBEmulatorCert:c:\CosmosDBEmulator\CosmosDBEmulatorCert -P -t -i microsoft/azure-cosmosdb-emulator
+md "%LOCALAPPDATA%\CosmosDBEmulatorCert" 2>nul
+docker run -v "%LOCALAPPDATA%\CosmosDBEmulatorCert":c:\CosmosDBEmulator\CosmosDBEmulatorCert -P -t -i microsoft/azure-cosmosdb-emulator
 ```
 
 The response looks similar to the following:
