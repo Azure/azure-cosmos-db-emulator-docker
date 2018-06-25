@@ -2,7 +2,7 @@
 
 This repository contains the scripts required to install and run the  [Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/documentdb/documentdb-nosql-local-emulator) as a Docker container. 
 
-You can fetch the image from Docker Hub by running `docker pull Microsoft/azure-cosmosdb-emulator`.
+You can fetch the image from Docker Hub by running `docker pull microsoft/azure-cosmosdb-emulator`.
 
 ## About the Azure Cosmos DB service
 [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction) is Microsoft's globally distributed, multi-model database. With the click of a button, Azure Cosmos DB enables you to elastically and independently scale throughput and storage across any number of Azure's geographic regions. It offers throughput, latency, availability, and consistency guarantees with comprehensive service level agreements (SLAs), something no other database service can offer.
@@ -24,7 +24,7 @@ To start the image, run the following commands.
 
 ``` 
 md %LOCALAPPDATA%\CosmosDBEmulatorCert 2>nul
-docker run -v %LOCALAPPDATA%\CosmosDBEmulatorCert:c:\CosmosDBEmulator\CosmosDBEmulatorCert -P -t -i microsoft/azure-cosmosdb-emulator
+docker run --memory 2048mb -v %LOCALAPPDATA%\CosmosDBEmulatorCert:c:\CosmosDB.Emulator\CosmosDBEmulatorCert -P -t -i microsoft/azure-cosmosdb-emulator
 ```
 
 The response looks similar to the following:
