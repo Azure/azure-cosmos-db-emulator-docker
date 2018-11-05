@@ -28,6 +28,7 @@ EXPOSE 10251
 EXPOSE 10252
 EXPOSE 10253
 EXPOSE 10254
+EXPOSE 10255
 
 # Start the interactive shell
 CMD [ "c:\\CosmosDBEmulator\\startemu.cmd" ]
