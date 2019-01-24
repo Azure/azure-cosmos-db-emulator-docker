@@ -23,12 +23,15 @@ RUN echo "Installer Done"
 
 # Expose the required network ports
 EXPOSE 8081
+EXPOSE 8901
+EXPOSE 8902
 EXPOSE 10250
 EXPOSE 10251
 EXPOSE 10252
 EXPOSE 10253
 EXPOSE 10254
 EXPOSE 10255
+EXPOSE 10350
 
 # Start the interactive shell
 CMD [ "c:\\CosmosDBEmulator\\startemu.cmd" ]
