@@ -15,4 +15,4 @@ echo cd /d ^%%LOCALAPPDATA^%%\CosmosDBEmulatorCert
 echo powershell .\importcert.ps1
 echo --------------------------------------------------------------------------------------------------
 echo Starting interactive shell
-cmd /K
+ping -t localhost > nul
