@@ -1,7 +1,7 @@
 # CosmosDB Emulator Dockerfile
 
 # Indicates that the windowsservercore image will be used as the base image.
-FROM microsoft/windowsservercore
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 # Metadata indicating an image maintainer.
 MAINTAINER mominag@microsoft.com
