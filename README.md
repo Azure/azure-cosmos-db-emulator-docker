@@ -1,8 +1,8 @@
 # Azure Cosmos DB Emulator Docker Container
 
-This repository contains the scripts required to install and run the  [Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/documentdb/documentdb-nosql-local-emulator) as a Docker container. 
+This repository contains the scripts required to install and run the  [Azure Cosmos DB Emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/docker-emulator-windows) as a Docker container. 
 
-You can fetch the image from Docker Hub by running `docker pull microsoft/azure-cosmosdb-emulator`.
+You can fetch the image from Docker Hub by running `docker pull mcr.microsoft.com/cosmosdb/windows/azure-cosmos-emulator`.
 
 ## About the Azure Cosmos DB service
 [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction) is Microsoft's globally distributed, multi-model database. With the click of a button, Azure Cosmos DB enables you to elastically and independently scale throughput and storage across any number of Azure's geographic regions. It offers throughput, latency, availability, and consistency guarantees with comprehensive service level agreements (SLAs), something no other database service can offer.
@@ -24,7 +24,7 @@ To start the image, run the following commands.
 
 ``` 
 md %LOCALAPPDATA%\CosmosDBEmulatorCert 2>nul
-docker run -v %LOCALAPPDATA%\CosmosDBEmulatorCert:c:\CosmosDBEmulator\CosmosDBEmulatorCert -P -t -i microsoft/azure-cosmosdb-emulator
+docker run -v %LOCALAPPDATA%\CosmosDBEmulatorCert:c:\CosmosDBEmulator\CosmosDBEmulatorCert -P -t -i mcr.microsoft.com/cosmosdb/windows/azure-cosmos-emulator
 ```
 
 The response looks similar to the following:
@@ -51,5 +51,5 @@ powershell .\importcert.ps1
 ```
 
 ## Developing against the emulator
-See [Developing against the emulator](https://docs.microsoft.com/azure/documentdb/documentdb-nosql-local-emulator#developing-with-the-emulator) for how to connect to the emulator using one of the supported APIs/SDKs.
+See [Developing against the emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/docker-emulator-windows) for how to connect to the emulator using one of the supported APIs/SDKs.
 
