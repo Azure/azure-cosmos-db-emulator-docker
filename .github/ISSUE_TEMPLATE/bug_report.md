@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 title: ''
 labels: ''
-assignees: ''
+assignees: sajeetharan
 
 ---
 
@@ -28,11 +28,16 @@ If applicable, add screenshots to help explain your problem.
  - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Docker Images Used: **
+ - Windows
+ - Linux
 
+**Arguments && Environment variables to start Docker:
+ 
+**Docker Environment**
+ - Docker compose
+ - Standalone
+ - Others (Please specify)
+ 
 **Additional context**
 Add any other context about the problem here.
