@@ -53,7 +53,7 @@ powershell .\importcert.ps1
 ## Developing against the emulator
 See [Developing against the emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/docker-emulator-windows) for how to connect to the emulator using one of the supported APIs/SDKs.
 
-## Linux-based emulator (preview)
+# Linux-based emulator (preview)
 The next generation of the Azure Cosmos DB emulator is entirely Linux-based and is available as a Docker container. It supports running on a wide variety of processors and operating systems, including Apple silicon and Microsoft ARM chips without any workarounds or virtual machines necessary. For more information, see documentation [here](https://aka.ms/CosmosVNextEmulator).
 
 ### Prerequisites
@@ -85,7 +85,7 @@ c1bb8cf53f8a   mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-prev
 
 If you encounter any problems with using this version of the emulator, please open an issue in this GitHub repository and tag it with the label `cosmosEmulatorVnextPreview`.
 
-## Installing certificates for Java SDK
+# Installing certificates for Java SDK
 
 When using the [Java SDK for Azure Cosmos DB](https://learn.microsoft.com/java/api/overview/azure/cosmos-readme?view=azure-java-stable) with the Azure Cosmos DB emulator, or the [linux based emulator](https://aka.ms/CosmosVNextEmulator) in https mode, it is necessary to install it's certificates to your local Java trust store.
 
