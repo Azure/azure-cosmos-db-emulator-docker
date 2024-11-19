@@ -82,6 +82,7 @@ docker ps
 CONTAINER ID   IMAGE                                                             COMMAND                  CREATED         STATUS         PORTS                                                                                  NAMES
 c1bb8cf53f8a   mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview  "/bin/bash -c /home/…"   5 seconds ago   Up 5 seconds   0.0.0.0:1234->1234/tcp, :::1234->1234/tcp, 0.0.0.0:8081->8081/tcp, :::8081->8081/tcp   <container-name>
 ```
+### Reporting issues
 
 If you encounter any problems with using this version of the emulator, please open an issue in this GitHub repository and tag it with the label `cosmosEmulatorVnextPreview`.
 
