@@ -86,6 +86,15 @@ c1bb8cf53f8a   mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-prev
 
 If you encounter any problems with using this version of the emulator, please open an issue in this GitHub repository and tag it with the label `cosmosEmulatorVnextPreview`.
 
+### Checking for the current version
+
+Run the following command (*after you pulled the latest version*) to find if the version is current:
+
+```
+docker inspect mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview  | grep Created
+        "Created": "2024-12-16T20:23:52.276219413Z",
+```
+
 # Installing certificates for Java SDK
 
 When using the [Java SDK for Azure Cosmos DB](https://learn.microsoft.com/java/api/overview/azure/cosmos-readme?view=azure-java-stable) with the Azure Cosmos DB emulator, or the [linux based emulator](https://aka.ms/CosmosVNextEmulator) in https mode, it is necessary to install it's certificates to your local Java trust store.
