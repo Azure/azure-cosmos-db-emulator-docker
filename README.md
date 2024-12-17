@@ -92,6 +92,8 @@ Run the following command (*after you pulled the latest version*) to find if the
 
 ```
 docker inspect mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview  | grep Created
+```
+```
         "Created": "2024-12-16T20:23:52.276219413Z",
 ```
 
