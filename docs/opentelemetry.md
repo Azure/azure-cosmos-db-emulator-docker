@@ -82,7 +82,7 @@ scrape_configs:
   - job_name: 'cosmos-metrics'
     scrape_interval: 5s
     static_configs:
-      - targets: ['pgcosmos:8889']  # OpenTelemetry Collector prometheus exporter
+      - targets: ['pgcosmos:8889']  # OpenTelemetry Collector Prometheus exporter
 ```
 
 ### Starting the Stack
@@ -152,7 +152,7 @@ docker run -d --name pgcosmos \
 
 ## Trace Information
 
-Cosmos DB Emulator includes comprehensive tracing for Cosmos DB operations. When OTLP exporting is enabled, you'll see traces for such operations (with a sample rate 0.1 to make it browser-friendly).
+Cosmos DB Emulator includes comprehensive tracing for Cosmos DB operations. When OTLP exporting is enabled, you'll see traces for such operations (with a sample rate of 0.1 to make it browser-friendly).
 
 Each trace includes detailed information such as:
 - Database name
@@ -295,5 +295,5 @@ rate(PGCosmos_Request_total[1m])
 sum by(Query_Type) (PGCosmos_Query_Local_total)
 ```
 
-Or from command-line:
+Alternatively, you can query metrics from the command line:
 `curl -s http://localhost:8889/metrics | grep "^PGCosmos_"`
