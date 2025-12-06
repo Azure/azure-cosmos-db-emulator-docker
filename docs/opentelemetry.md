@@ -1,4 +1,4 @@
-# CosmosDB Emulator OpenTelemetry Integration
+# Cosmos DB Emulator OpenTelemetry Integration
 
 This document provides instructions for using OpenTelemetry with Cosmos DB Emulator to monitor and trace your application. OpenTelemetry provides a standardized approach for collecting telemetry data, including traces, metrics, and logs.
 
@@ -6,7 +6,7 @@ This document provides instructions for using OpenTelemetry with Cosmos DB Emula
 
 [OpenTelemetry](https://opentelemetry.io/) (OTLP) is an open-source observability framework that provides a collection of tools, APIs, and SDKs for instrumenting, generating, collecting, and exporting telemetry data. It's vendor-neutral and has broad industry support, making it an ideal choice for standardizing telemetry across your applications.
 
-OTLP (OpenTelemetry Protocol) is the protocol used by OpenTelemetry to transmit telemetry data between components. It is designed to be efficient and compatible with various backends.
+OTLP (OpenTelemetry Protocol) is the protocol used by OpenTelemetry to transmit telemetry data between components. It's designed to be efficient and compatible with various backends.
 
 ## Configuration Options
 
@@ -14,14 +14,13 @@ Cosmos DB Emulator supports several telemetry options, which can be configured t
 
 | Flag | Environment Variable | Description | Default |
 |------|---------------------|-------------|---------|
-| `--enable-otlp` | `ENABLE_OTLP_EXPORTER` | Enable OTLP exporter for sending telemetry to external collectors | `false` |
+| `--enable-otlp` | `ENABLE_OTLP_EXPORTER` | Enable OTLP gRPC exporter for sending telemetry to external collectors | `false` |
 | `--enable-console` | `ENABLE_CONSOLE_EXPORTER` | Enable console output of telemetry data (useful for debugging) | `false` |
 | `--log-level` | `LOG_LEVEL` | Set logging verbosity level | `info` |
-| `--enable-telemetry` | `ENABLE_TELEMETRY` | Enable usage info being sent to Microsoft | `true` |
 
 ## Setting Up OpenTelemetry with Docker Compose
 
-The simplest way to set up OpenTelemetry with Cosmos DB Emulator is using Docker Compose. This configuration automatically connects Cosmos DB Emulator with Jaeger for distributed tracing.
+The simplest way to set up OpenTelemetry with Cosmos DB Emulator is using Docker Compose. This configuration automatically connects Cosmos DB Emulator with Jaeger for distributed tracing and Prometheus for metrics collection.
 
 ### Sample Docker Compose Configuration
 
@@ -29,7 +28,7 @@ Create a `docker-compose.yml` file with the following content:
 
 ```yaml
 services:
-  traces:
+  jaeger:
     image: jaegertracing/jaeger:latest
     container_name: jaeger
     ports:
@@ -39,23 +38,51 @@ services:
     networks:
       - cosmos-network
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - cosmos-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-otlp-receiver'
+      - '--storage.tsdb.path=/prometheus'
+
   pgcosmos:
-    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest
-    container_name: emulator
+    image: cosmosemulator:latest
+    container_name: pgcosmos
     ports:
       - "8081:8081"
       - "1234:1234"
-      - "9712:9712"    # PostgreSQL metrics endpoint
+      - "9712:9712"      # PostgreSQL
+      - "8889:8889"      # OpenTelemetry Collector Prometheus metrics endpoint
     environment:
-      - ENABLE_TELEMETRY=true
       - ENABLE_OTLP_EXPORTER=true
-      - ENABLE_CONSOLE_EXPORTER=true
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
+      - ENABLE_CONSOLE_EXPORTER=false
     networks:
       - cosmos-network
 
 networks:
   cosmos-network:
+```
+
+### Prometheus Configuration
+
+Create a `prometheus.yml` file in the same directory as your `docker-compose.yml`:
+
+```yaml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'cosmos-metrics'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['pgcosmos:8889']  # OpenTelemetry Collector prometheus exporter
 ```
 
 ### Starting the Stack
@@ -70,70 +97,62 @@ docker-compose up -d
 
 If you prefer to run Cosmos DB Emulator directly with Docker, you can use the following commands:
 
-### 1. Start Jaeger
+### 1. Create a Docker Network
+
+All containers must be on the same network to communicate by name:
+
+```bash
+docker network create cosmos-network
+```
+
+### 2. Start Jaeger
 
 ```bash
 docker run -d --name jaeger \
+  --network cosmos-network \
   -p 16686:16686 \
   -p 4317:4317 \
   -p 4318:4318 \
   jaegertracing/jaeger:latest
 ```
 
-### 2. Start CosmosDB Emulator with OpenTelemetry enabled
+### 3. Start Prometheus
+
+Using the same prometheus.yml as specified above, start Prometheus:
+
+```bash
+docker run -d --name prometheus \
+  --network cosmos-network \
+  -p 9090:9090 \
+  -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml \
+  prom/prometheus:latest \
+  --config.file=/etc/prometheus/prometheus.yml \
+  --web.enable-otlp-receiver \
+  --storage.tsdb.path=/prometheus
+```
+
+### 4. Start Cosmos DB Emulator with OpenTelemetry enabled
 
 ```bash
 docker run -d --name pgcosmos \
+  --network cosmos-network \
   -p 8081:8081 \
   -p 1234:1234 \
   -p 9712:9712 \
-  --link jaeger \
+  -p 8889:8889 \
   -e ENABLE_OTLP_EXPORTER=true \
   -e ENABLE_CONSOLE_EXPORTER=false \
-  -e OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317 \
-  -e LOG_LEVEL=trace \
   cosmosemulator:latest
 ```
 
 ## Accessing the Monitoring UIs
 
 - **Jaeger UI**: http://localhost:16686
+- **Prometheus UI**: http://localhost:9090
 
 ## Trace Information
 
-Cosmos DB Emulator includes comprehensive tracing for all Cosmos DB operations. When OTLP exporting is enabled, you'll see traces for the following operations:
-
-### Document Operations
-- `CosmosDB.DocumentOperation.Create`
-- `CosmosDB.DocumentOperation.Replace`
-- `CosmosDB.DocumentOperation.Upsert`
-- `CosmosDB.DocumentOperation.Delete`
-- `CosmosDB.DocumentOperation.Read`
-- `CosmosDB.DocumentOperation.Batch`
-- `CosmosDB.DocumentOperation.Patch`
-
-### Database Operations
-- `CosmosDB.Database.Create`
-- `CosmosDB.Database.Read`
-- `CosmosDB.Database.Delete`
-- `CosmosDB.Database.List`
-- `CosmosDB.Database.GetOrFind`
-
-### Collection Operations
-- `CosmosDB.Collection.Create`
-- `CosmosDB.Collection.Read`
-- `CosmosDB.Collection.Delete`
-- `CosmosDB.Collection.List`
-
-### Query Operations
-- `CosmosDB.Query.Execute`
-- `CosmosDB.Query.ReadQueryPlan`
-
-### Other Operations
-- `CosmosDB.Document.ReadFeed`
-- `CosmosDB.DatabaseAccount.Read`
-- `CosmosDB.PartitionKeyRange.Read`
-- `CosmosDB.Offer.List`
+Cosmos DB Emulator includes comprehensive tracing for Cosmos DB operations. When OTLP exporting is enabled, you'll see traces for such operations (with a sample rate 0.1 to make it browser-friendly).
 
 Each trace includes detailed information such as:
 - Database name
@@ -141,7 +160,7 @@ Each trace includes detailed information such as:
 - Document ID (when applicable)
 - Operation type and resource type
 - HTTP method and path
-- For queries: the original query text and translated query
+- For queries: query text
 - For queries with results: the number of items returned
 
 ## Enabling the Console Exporter
@@ -163,18 +182,20 @@ docker logs pgcosmos
 
 ## OpenTelemetry Collector Configuration
 
-CosmosDB Emulator uses the OpenTelemetry Collector for processing telemetry data. The default configuration is:
+Cosmos DB Emulator uses the OpenTelemetry Collector for processing telemetry data. The default configuration is:
 
 ```yaml
 receivers:
   otlp:
     protocols:
       grpc:
+        endpoint: 0.0.0.0:4317
       http:
+        endpoint: 0.0.0.0:4318
   postgresql:
     endpoint: localhost:9712
-    username: otel
-    password: otel
+    username: ${env:OTEL_POSTGRES_USER}
+    password: ${env:OTEL_POSTGRES_PASSWORD}
     tls:
       insecure: true
 
@@ -186,11 +207,14 @@ processors:
 exporters:
   debug:
     verbosity: detailed
-  
+
   otlp/traces:
-    endpoint: traces:4317
+    endpoint: jaeger:4317
     tls:
       insecure: true
+
+  prometheus:
+    endpoint: 0.0.0.0:8889
 
 service:
   pipelines:
@@ -198,10 +222,16 @@ service:
       receivers: [otlp]
       processors: [batch]
       exporters: [debug, otlp/traces]
+    metrics:
+      receivers: [postgresql, otlp]
+      processors: [batch]
+      exporters: [prometheus, debug]
 
   telemetry:
     logs:
-      level: "WARN"
+      level: "INFO"
+    metrics:
+      level: "normal"
 ```
 
 For custom configuration, you can override this file by mounting your own configuration file when running the container:
@@ -209,7 +239,6 @@ For custom configuration, you can override this file by mounting your own config
 ```bash
 docker run -d --name pgcosmos \
   -v $(pwd)/custom-otel-config.yaml:/etc/otel/config.yaml \
-  -e ENABLE_TELEMETRY=true \
   -e ENABLE_OTLP_EXPORTER=true \
   cosmosemulator:latest
 ```
@@ -232,10 +261,39 @@ The PostgreSQL metrics require that the "otel" user is properly set up. To verif
 docker exec -it pgcosmos /scripts/setup_otel_user.sh
 ```
 
-### Ensure PostgreSQL is Ready
+## Metrics Information
 
-Before the OpenTelemetry collector can collect metrics, PostgreSQL needs to be fully started:
+Cosmos DB Emulator exports the following metrics to Prometheus (via OpenTelemetry Collector on port 8889):
 
-```bash
-docker exec -it pgcosmos pg_isready -p 9712 -U cosmosdev -h /socket
+### Gateway Metrics
+
+1. **`PGCosmos_Request_total`** (Counter)
+   - Total number of requests processed
+   - Labels: `Emulator_ID`, `Release_Version`
+
+2. **`PGCosmos_Query_Local_total`** (Counter)
+   - Query operations by type
+   - Labels: `Query_Type` (e.g., "ReadFeed.Database", "Create.Document")
+
+### PostgreSQL Metrics (optional)
+
+3. **`postgresql_backends`** - Active connections
+4. **`postgresql_commits_total`** - Total commits
+5. **`postgresql_db_size_bytes`** - Database size
+6. **`postgresql_operations_total`** - Database operations
+
+### Example Prometheus Queries
+
+```promql
+# Total requests
+PGCosmos_Request_total
+
+# Requests per second
+rate(PGCosmos_Request_total[1m])
+
+# Query operations by type
+sum by(Query_Type) (PGCosmos_Query_Local_total)
 ```
+
+Or from command-line:
+`curl -s http://localhost:8889/metrics | grep "^PGCosmos_"`
