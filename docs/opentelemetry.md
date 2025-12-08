@@ -152,7 +152,7 @@ docker run -d --name pgcosmos \
 
 ## Trace Information
 
-Cosmos DB Emulator includes comprehensive tracing for Cosmos DB operations. When OTLP exporting is enabled, you'll see traces for such operations (with a sample rate of 0.1 to make it browser-friendly).
+Cosmos DB Emulator includes comprehensive tracing for all Cosmos DB operations. When OTLP exporting is enabled, you'll see traces for each operation.
 
 Each trace includes detailed information such as:
 - Database name
