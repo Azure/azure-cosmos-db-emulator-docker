@@ -145,6 +145,36 @@ docker run -d --name pgcosmos \
   cosmosemulator:latest
 ```
 
+## Using with Aspire
+To view structured logs and traces from Cosmos DB Emulator in the Aspire Dashboard, configure OTLP export in your `AppHost.cs`:
+```csharp
+cosmos.RunAsPreviewEmulator(emulator =>
+{
+    emulator.WithDataExplorer();
+    emulator.WithArgs("--protocol", "http");
+    
+    // Enable OTLP export to Aspire dashboard
+    emulator.WithEnvironment("ENABLE_OTLP_EXPORTER", "true");
+    // Use the port defined for OTLP in launchSettings.json
+    emulator.WithEnvironment("OTEL_EXPORTER_OTLP_ENDPOINT", "http://host.docker.internal:19218");
+
+    emulator.WithEnvironment("OTEL_EXPORTER_OTLP_PROTOCOL", "grpc");
+});
+```
+Ensure your `launchSettings.json` has matching OTLP configuration:
+```json
+{
+  "profiles": {
+    "http": {
+      "environmentVariables": {
+        "ASPIRE_DASHBOARD_OTLP_ENDPOINT_URL": "http://localhost:19218"
+      }
+    }
+  }
+}
+
+```
+
 ## Accessing the Monitoring UIs
 
 - **Jaeger UI**: http://localhost:16686
