@@ -53,7 +53,7 @@ powershell .\importcert.ps1
 ## Developing against the emulator
 See [Developing against the emulator](https://learn.microsoft.com/en-us/azure/cosmos-db/docker-emulator-windows) for how to connect to the emulator using one of the supported APIs/SDKs.
 
-# Linux-based emulator (preview)
+# Linux-based emulator
 The next generation of the Azure Cosmos DB emulator is entirely Linux-based and is available as a Docker container. It supports running on a wide variety of processors and operating systems, including Apple silicon and Microsoft ARM chips without any workarounds or virtual machines necessary. For more information, see documentation [here](https://aka.ms/CosmosVNextEmulator).
 
 ### Prerequisites
@@ -62,10 +62,10 @@ The next generation of the Azure Cosmos DB emulator is entirely Linux-based and 
 
 ### Installation
 
-Get the Docker container image using `docker pull`. The container image is published to the [Microsoft Artifact Registry](https://mcr.microsoft.com/) as `mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview`.
+Get the Docker container image using `docker pull`. The container image is published to the [Microsoft Artifact Registry](https://mcr.microsoft.com/) as `mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest`.
 
 ```bash
-docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest
 ```
 
 ### Running
@@ -73,14 +73,14 @@ docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
 To run the container, use `docker run`. Afterwards, use `docker ps` to validate that the container is running.
 
 ```bash
-docker run --detach --publish 8081:8081 --publish 1234:1234 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+docker run --detach --publish 8081:8081 --publish 1234:1234 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest
 
 docker ps
 ```
 
 ```output
 CONTAINER ID   IMAGE                                                             COMMAND                  CREATED         STATUS         PORTS                                                                                  NAMES
-c1bb8cf53f8a   mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview  "/bin/bash -c /home/…"   5 seconds ago   Up 5 seconds   0.0.0.0:1234->1234/tcp, :::1234->1234/tcp, 0.0.0.0:8081->8081/tcp, :::8081->8081/tcp   <container-name>
+c1bb8cf53f8a   mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest  "/bin/bash -c /home/…"   5 seconds ago   Up 5 seconds   0.0.0.0:1234->1234/tcp, :::1234->1234/tcp, 0.0.0.0:8081->8081/tcp, :::8081->8081/tcp   <container-name>
 ```
 ### Reporting issues
 
@@ -91,7 +91,7 @@ If you encounter any problems with using this version of the emulator, please op
 Run the following command (*after you pulled the latest version*) to find if the version is current:
 
 ```
-docker inspect mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview  | grep Created
+docker inspect mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-latest  | grep Created
 ```
 ```
         "Created": "2024-12-16T20:23:52.276219413Z",
